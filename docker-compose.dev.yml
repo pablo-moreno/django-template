@@ -1,0 +1,21 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:14.1
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: development
+      POSTGRES_DB: default
+    volumes:
+      - "./data:/var/lib/postgres/data"
+
+  django:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code
+    environment:
+      DATABASE_URL: "postgres://admin:development@postgres:5432/default"
+    links:
+      - postgres

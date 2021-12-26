@@ -1,4 +1,4 @@
-from rest_framework.testing import APITestCase
+from rest_framework.test import APITestCase
 
 
 class TestItWorks(APITestCase):
