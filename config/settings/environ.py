@@ -4,12 +4,12 @@ import os
 SECRET_KEY = os.environ.get('SECRET_KEY', 'this-is-the-default-secret-key')
 DEBUG = os.environ.get('DEBUG', "True").lower() == 'true'
 
-POSTGRES_DB = os.environ.get('POSTGRES_DB', 'postgres')
-POSTGRES_USER = os.environ.get('POSTGRES_USER', 'postgres')
-POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD', '')
-DATABASE_HOST = os.environ.get('DATABASE_HOST', 'postgres')
+DATABASE_NAME = os.environ.get('DATABASE_NAME', '')
+DATABASE_USER = os.environ.get('DATABASE_USER', '')
+DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD', '')
+DATABASE_HOST = os.environ.get('DATABASE_HOST', '')
 DATABASE_PORT = os.environ.get('DATABASE_PORT', 5432)
-DATABASE_URL = os.environ.get('DATABASE_URL', f'postgis://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{POSTGRES_DB}')
+DATABASE_URL = os.environ.get('DATABASE_URL', f'sqlite:///db.sqlite3')
 
 STATIC_ROOT = os.environ.get('STATIC_ROOT', 'static')
 MEDIA_ROOT = os.environ.get('MEDIA_ROOT', 'media')
