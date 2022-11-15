@@ -1,20 +1,26 @@
 import os
+import environ
+from pathlib import Path
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'this-is-the-default-secret-key')
-DEBUG = os.environ.get('DEBUG', "True").lower() == 'true'
+BASE_DIR = Path('../../..')
 
-DATABASE_NAME = os.environ.get('DATABASE_NAME', '')
-DATABASE_USER = os.environ.get('DATABASE_USER', '')
-DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD', '')
-DATABASE_HOST = os.environ.get('DATABASE_HOST', '')
-DATABASE_PORT = os.environ.get('DATABASE_PORT', 5432)
-DATABASE_URL = os.environ.get('DATABASE_URL', f'sqlite:///db.sqlite3')
+env = environ.Env()
+env_file = BASE_DIR / '.env'
 
-STATIC_ROOT = os.environ.get('STATIC_ROOT', 'static')
-MEDIA_ROOT = os.environ.get('MEDIA_ROOT', 'media')
+if os.path.exists(env_file):
+    environ.Env.read_env(env_file)
 
-REDIS_HOST = os.environ.get('REDIS_HOST', 'redis')
-REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
+SECRET_KEY = env.str('SECRET_KEY', 'this-is-the-default-secret-key')
+DEBUG = env.bool('DEBUG', True)
 
-PAGE_SIZE = os.environ.get('PAGE_SIZE', 20)
+DATABASE_URL = env.db_url('DATABASE_URL', f'sqlite:///db.sqlite3')
+
+STATIC_ROOT = env.str('STATIC_ROOT', 'static')
+MEDIA_ROOT = env.str('MEDIA_ROOT', 'media')
+
+REDIS_HOST = env.str('REDIS_HOST', 'redis')
+REDIS_PORT = env.str('REDIS_PORT', 6379)
+
+PAGE_SIZE = env.int('PAGE_SIZE', 20)
+ALLOWED_HOSTS = env.str('ALLOWED_HOSTS', '*').split(',')
