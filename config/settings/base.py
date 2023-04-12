@@ -1,6 +1,10 @@
 import datetime
 from config.settings.environ import *  # noqa
 
+APP_NAME = 'template'
+DESCRIPTION = ''
+VERSION = '0.1.0'
+
 
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -16,6 +20,8 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'django_extensions',
     'django_filters',
+    'watchman',
+    'drf_spectacular',
 ]
 
 PROJECT_APPS = [
@@ -108,6 +114,14 @@ STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 # Django Rest Framework Configuration
 REST_FRAMEWORK = {
@@ -127,6 +141,7 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'PAGE_SIZE': PAGE_SIZE,
 }
 
@@ -144,3 +159,26 @@ JWT_AUTH = {
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
+
+
+S3_ENABLED = os.environ.get('S3_ENABLED', 'FALSE').lower() == 'true'
+
+if S3_ENABLED:
+    AWS_S3_HOST = os.environ.get('S3_HOST')
+    AWS_ACCESS_KEY_ID = os.environ.get('S3_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('S3_STORAGE_BUCKET_NAME')
+    AWS_S3_ENDPOINT_URL = os.environ.get('S3_ENDPOINT_URL')
+    STORAGES["default"] = {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    }
+
+WATCHMAN_STORAGE_PATH = 'tmp'
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': APP_NAME,
+    'DESCRIPTION': DESCRIPTION,
+    'VERSION': VERSION,
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}

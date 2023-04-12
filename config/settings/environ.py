@@ -3,7 +3,7 @@ import environ
 from pathlib import Path
 
 
-BASE_DIR = Path('../../..')
+BASE_DIR = Path('.')
 
 env = environ.Env()
 env_file = BASE_DIR / '.env'

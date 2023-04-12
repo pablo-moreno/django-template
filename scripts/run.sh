@@ -1,8 +1,10 @@
-WSGI_HOST=${WSGI_HOST:='0.0.0.0'}
-WSGI_PORT=8000
-WSGI_WORKERS=${WSGI_WORKERS:=1}
-WSGI_TIMEOUT=${WSGI_TIMEOUT:=120}
-WSGI_MODULE=${WSGI_MODULE:=config.wsgi}
+#!/bin/bash
+
+ASGI_HOST=${WSGI_HOST:='0.0.0.0'}
+ASGI_PORT=8000
+ASGI_WORKERS=${WSGI_WORKERS:=1}
 WORKER_NUM_PROCESSES=${WORKER_NUM_PROCESSES:=1}
 
-poetry run gunicorn -w $WSGI_WORKERS -t $WSGI_TIMEOUT -b $WSGI_HOST:$WSGI_PORT $WSGI_MODULE
+service nginx restart
+
+poetry run uvicorn --workers $ASGI_WORKERS --host $ASGI_HOST --port $ASGI_PORT config.asgi:application
