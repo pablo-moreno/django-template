@@ -12,6 +12,6 @@ RUN apt-get update && \
 
 COPY nginx/nginx.conf /etc/nginx/sites-enabled/default
 
-RUN pip install poetry && poetry install && poetry run python manage.py collectstatic --noinput
+RUN pip install -r requirements.txt && python manage.py collectstatic --noinput
 
 CMD [ "bash", "./scripts/run.sh" ]
