@@ -160,15 +160,7 @@ LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
 
-
-S3_ENABLED = os.environ.get('S3_ENABLED', 'FALSE').lower() == 'true'
-
 if S3_ENABLED:
-    AWS_S3_HOST = os.environ.get('S3_HOST')
-    AWS_ACCESS_KEY_ID = os.environ.get('S3_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.environ.get('S3_STORAGE_BUCKET_NAME')
-    AWS_S3_ENDPOINT_URL = os.environ.get('S3_ENDPOINT_URL')
     STORAGES["default"] = {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
     }
@@ -180,5 +172,4 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': DESCRIPTION,
     'VERSION': VERSION,
     'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
 }
