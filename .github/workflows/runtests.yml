@@ -1,0 +1,27 @@
+name: CI
+on: [push]
+
+jobs:
+  ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+        os: [ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setup dependencies
+        run: pip install -r requirements.test.txt
+      - name: Run tests
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.develop
+        run: pytest --cov && coverage xml
+#      - name: Upload coverage reports to Codecov
+#        uses: codecov/codecov-action@v4.0.1
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          slug: pablo-moreno/django-template
